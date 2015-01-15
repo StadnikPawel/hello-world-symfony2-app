@@ -21,18 +21,26 @@ class BeachController extends Controller
     /**
      * Lists all Beach entities.
      *
-     * @Route("/", name="beach")
+     * @Route("/pager/{page}", name="beach", requirements={"page": "\d+"})
      * @Method("GET")
      * @Template()
      */
-    public function indexAction()
+    public function indexAction($page = 1)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em    = $this->get('doctrine.orm.entity_manager');
+        $dql   = "SELECT p FROM GajdawBDDTutorialGeographyBundle:Beach p";
+        $query = $em->createQuery($dql);
 
-        $entities = $em->getRepository('GajdawBDDTutorialGeographyBundle:Beach')->findAll();
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $query,
+            $page,
+            3
+        );
 
+        // parameters to template
         return array(
-            'entities' => $entities,
+            'pagination' => $pagination
         );
     }
     /**
