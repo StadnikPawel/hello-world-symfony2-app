@@ -3,34 +3,38 @@
 {% block body -%}
     <h1>Beach list</h1>
 
-    <table class="table table-striped">
+    <div class="count">
+        Number of records: {{ pagination.getTotalItemCount }}
+    </div>
 
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Size</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for entity in entities %}
-                <tr>
-                <td>{{ loop.index }}.</td>
-                    <td>
-                        <a href="{{ path('beach_show', { 'id': entity.id }) }}">
-                            {{ entity.name }}
-                        </a>
-                    </td>
-                    <td>{{ entity.size }}</td>
-                    <td>
-                   <a href="{{ path('beach_show', { 'id': entity.id }) }}" class="btn btn-default" role="button">show</a>
-                    <a href="{{ path('beach_edit', { 'id': entity.id }) }}" class="btn btn-default" role="button">edit</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+
+    <table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for peninsula in pagination %}
+        <tr>
+            <td>{{ loop.index }}.</td>
+            <td><a href="{{ path('beach_show', { 'id': beach.id }) }}">{{ beach.name }}</a></td>
+            <td>{{ beach.size }}</td>
+            <td>
+                <a href="{{ path('beach_show', { 'id': beach.id }) }}" class="btn btn-default" role="button">show</a>
+                <a href="{{ path('beach_edit', { 'id': beach.id }) }}" class="btn btn-default" role="button">edit</a>
+            </td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+    </table>
 
         <p>
     <a
